@@ -11,24 +11,16 @@
  */
 class Solution {
 public:
-    void solution(TreeNode* node, string& bin, int& result) {
-        bin = bin + std::to_string(node->val);
-        if (node->left) {
-            solution(node->left, bin, result);
-            bin.erase(bin.size() - 1);
-        }
-        if (node->right) {
-            solution(node->right, bin, result);
-            bin.erase(bin.size() - 1);
-        }
-        if (node->left == nullptr && node->right == nullptr)
-            result += stoi(bin, nullptr, 2);
+    void solution(TreeNode* node, int sum, int& result) {
+        int temp = 2*sum + node->val;
+        if (node->left) solution(node->left, temp, result);
+        if (node->right) solution(node->right, temp, result);
+        if (node->left == nullptr && node->right == nullptr) result += temp;
     }
 
     int sumRootToLeaf(TreeNode* root) {
         int result = 0;
-        string bin = "";
-        solution(root, bin, result);
+        solution(root, 0, result);
         return result;
     }
 };
