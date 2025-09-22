@@ -9,19 +9,21 @@ public:
                 freq[num] = 1;
         }
 
-        auto compare = [](const pair<int, int>& a, const pair<int, int>& b) {
-            return a.second < b.second;
-        };
-
-        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(compare)> maxHeap;
+        vector<vector<int>> buckets(nums.size() + 1);
         for (const auto& item : freq) {
-            maxHeap.push(item);
+            buckets[item.second].push_back(item.first);
         }
 
         vector<int> result;
-        for (int i = 0; i < k; ++i) {
-            result.push_back(maxHeap.top().first);
-            maxHeap.pop();
+        int i = buckets.size() - 1;
+        while (k > 0 && i >= 0) {
+            if (!buckets[i].empty()) {
+                for (const auto& item : buckets[i]) {
+                    result.push_back(item);
+                    k--;
+                }
+            }
+            i--;
         }
 
         return result;
